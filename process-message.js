@@ -2,8 +2,8 @@ const Dialogflow = require('dialogflow');
 const Pusher = require('pusher');
 
 // You can find your project ID in your Dialogflow agent settings
-const projectId = 'test-97ac1'; //https://dialogflow.com/docs/agents#settings
-const sessionId = '8836671054';
+const projectId = 'fc-chatbot-b4bb1'; //https://dialogflow.com/docs/agents#settings
+const sessionId = '11155627717';
 const languageCode = 'en-US';
 
 const config = {
