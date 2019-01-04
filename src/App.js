@@ -12,30 +12,22 @@ class App extends Component {
     }
 
     componentDidMount() {
-        // const pusher = new Pusher('727f670f81b341315051', {
-        //     cluster: 'ap2',
-        //     encrypted: true,
-        // });
-
-        // const channel = pusher.subscribe('bot');
-        // channel.bind('bot-response', data => {
             fetch('https://api.dialogflow.com/v1/query?v=20150910', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'authorization': 'Bearer 2feca599d3d0492e88ded23d7a18744f' },
             body: JSON.stringify({
-                query: 'name?',//this.state.userMessage,
+                query: 'How can I help you?',
                 lang: 'en', 
                 sessionId: '12345asfg'
             }),
         }).then(results => { return results.json();}).then(data => { console.log(data);});
             const msg = {
-                text: 'there?',
+                text: 'How can I help you?',
                 user: 'ai',
             };
             this.setState({
                 conversation: [...this.state.conversation, msg],
             });
-       // });
     }
 
     handleChange = event => {
@@ -63,9 +55,17 @@ class App extends Component {
                 lang: 'en', 
                 sessionId: '12345asfg'
             }),
-        });
-
-        this.setState({ userMessage: '' });
+        }).then((res) => res.json())
+        .then((data) =>  {console.log(data.result.fulfillment)
+           let botMsg = {
+                    text: data.result.fulfillment.speech,
+                    user: 'ai',
+            };
+            this.setState({
+                    conversation: [...this.state.conversation, botMsg],
+                    userMessage: ""
+                });
+        })
     };
 
     render() {
