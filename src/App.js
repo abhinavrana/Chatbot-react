@@ -1,32 +1,41 @@
 import React, { Component } from 'react';
-import Pusher from 'pusher-js';
+//import Pusher from 'pusher-js';
 import './App.css';
 
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userMessage: 'a',
+            userMessage: '',
             conversation: [],
         };
     }
 
     componentDidMount() {
-        const pusher = new Pusher('197597268c211229a5fe', {
-            cluster: 'ap2',
-            encrypted: true,
-        });
+        // const pusher = new Pusher('727f670f81b341315051', {
+        //     cluster: 'ap2',
+        //     encrypted: true,
+        // });
 
-        const channel = pusher.subscribe('bot');
-        channel.bind('bot-response', data => {
+        // const channel = pusher.subscribe('bot');
+        // channel.bind('bot-response', data => {
+            fetch('https://api.dialogflow.com/v1/query?v=20150910', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'authorization': 'Bearer 2feca599d3d0492e88ded23d7a18744f' },
+            body: JSON.stringify({
+                query: 'name?',//this.state.userMessage,
+                lang: 'en', 
+                sessionId: '12345asfg'
+            }),
+        }).then(results => { return results.json();}).then(data => { console.log(data);});
             const msg = {
-                text: data.message,
+                text: 'there?',
                 user: 'ai',
             };
             this.setState({
                 conversation: [...this.state.conversation, msg],
             });
-        });
+       // });
     }
 
     handleChange = event => {
@@ -46,11 +55,13 @@ class App extends Component {
             conversation: [...this.state.conversation, msg],
         });
 
-        fetch('http://localhost:5000/chat', {
+        fetch('https://api.dialogflow.com/v1/query?v=20150910', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'authorization': 'Bearer 2feca599d3d0492e88ded23d7a18744f' },
             body: JSON.stringify({
-                message: this.state.userMessage,
+                query: this.state.userMessage,
+                lang: 'en', 
+                sessionId: '12345asfg'
             }),
         });
 
